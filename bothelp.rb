@@ -183,6 +183,10 @@ bot.command :clearrole, required_permissions: [:manage_roles], permission_messag
   }
   event.respond("Removed #{sum} members from #{role_actual.name}.")
 end
+
+bot.command :stop, required_permissions: [:manage_server] do |event|
+  bot.stop()
+end
 # --------------------EVENTS--------------------------------------------
 # welcomes and provides links to newcomers
 bot.member_join do |event| # Welcome new users
@@ -194,4 +198,4 @@ bot.member_join do |event| # Welcome new users
 end
 
 
-bot.run
+bot.run()
