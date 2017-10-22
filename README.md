@@ -1,2 +1,2 @@
 # bothelp
-Discord bot written in Ruby for Modhelp Mapping Contest server
+Discord bot using Discordrb library in Ruby for Modhelp Mapping Contest server
