@@ -184,20 +184,6 @@ bot.command :clearrole, required_permissions: [:manage_roles], permission_messag
   event.respond("Removed #{sum} members from #{role_actual.name}.")
 end
 # --------------------EVENTS--------------------------------------------
-# results emoji when detecting string with "results"
-bot.message(containing: '') do |event| 
-  if event.message.to_s.downcase.include?("results")
-    str = "results when"
-    event.respond(str)
-  end
-end
-# test stuff
-bot.mention do |event|
-  highlight = "<@#{event.user.id}>, sup"
-  message = "lol #{channel_send(botprovinggrounds)}"
-  bot.send_message(botprovinggrounds, highlight)
-  bot.send_message(botprovinggrounds, message)
-end
 # welcomes and provides links to newcomers
 bot.member_join do |event| # Welcome new users
   
