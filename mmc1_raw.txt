@@ -8,7 +8,7 @@
 8	Rohit6
 9	Pho
 10	diraimur
-11	-[H13]-
+11	LowComboFC
 12	Rizia
 13	Anxient
 14	EvilElvis
@@ -35,5 +35,5 @@
 35	Stingy
 36	strickluke
 37	HappeeGoat
-38	Tatsuyu
+38	Weber
 39	yoshiFTW69

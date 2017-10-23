@@ -1,11 +1,11 @@
 1	Pentori
 2	Miura
-3	[ Sharuresu ]
+3	Sharu
 4	nold_1702
 5	Smoothie World
 6	xLolicore-
 7	Kibbleru
-8	My Angel Mir
+8	Metaku
 9	BOUYAAA
 10	Milan-
 11	SnowNiNo_
@@ -23,7 +23,7 @@
 23	CookieBite
 24	Battle
 25	_DT3
-26	borborygmos
+26	_83
 27	Lilyanna
 28	IOException
 29	gameon123321

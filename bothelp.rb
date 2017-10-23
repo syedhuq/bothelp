@@ -56,13 +56,14 @@ help_admin = [
   "`-clear <n>` : Removes the last n lines (including command line) from chat, bounded 2-100. ex. `-clear 5`",
   "`-setname <user> (name)` : Set's the target user's nick, or resets it if only one argument is given. Both arguments are case-sensitive. Represent spaces with underscore. ex. `-setname Smoothie_World sw`",
   "`-setrole <user> <role>` : Set's the target user's role. The user argument is case-sensitive. ex. `-setrole Ongaku Contestants`",
-  "`-clearrole <role>` : Removes all members from this role. ex. `-clearrole Contestants`"
+  "`-clearrole <role>` : Removes all members from this role. ex. `-clearrole Contestants`",
+  "`-stop` : Turns the bot off. ex. `-stop`"
 ]
 # --------------------COMMANDS--------------------------------------------
 # help(admin=false) returns info for all bot commands, and admin commands too if desired
 bot.command :help, min_args: 0, max_args: 1 do |event, admin|
   event.respond("**Public Commands:**\n" + help_public.join("\n"))
-  event.respond("**Admin Commands:**\n" + help_admin.join("\n")) if admin.downcase == "admin"
+  event.respond("**Admin Commands:**\n" + help_admin.join("\n")) if admin.nil? == false && event.user.permission?(:manage_messages) && admin.downcase == "admin"
 end
 
 # ranking(user) returns the given user's rankings in all previous MMC
@@ -103,6 +104,14 @@ bot.command :thread do |event, contest| # return results thread
   else
     event.respond("MMC #{contest} not recognized.")
   end
+end
+
+# echo(sentence) makes the bot say the sentence
+bot.command :echo do |event, *args|
+  event.respond("...")
+  event.channel.prune(2)
+  sentence = args.join(' ')
+  event.respond(sentence)
 end
 
 # clean(n) prunes n messages in channel, including command line, range 2..100
@@ -170,6 +179,7 @@ bot.command :setrole, required_permissions: [:manage_roles], permission_message:
   end
   event.respond(str)  
 end
+
 # clearrole(role) removes all members from this role
 bot.command :clearrole, required_permissions: [:manage_roles], permission_message: no_perm, min_args: 1, max_args: 1 do |event, role|
   role_actual = event.server.roles.find{|r| r.name.downcase == role.downcase}
@@ -184,6 +194,7 @@ bot.command :clearrole, required_permissions: [:manage_roles], permission_messag
   event.respond("Removed #{sum} members from #{role_actual.name}.")
 end
 
+# stop() stops the bot
 bot.command :stop, required_permissions: [:manage_server] do |event|
   bot.stop()
 end
@@ -196,6 +207,5 @@ bot.member_join do |event| # Welcome new users
   bot.send_message(general, highlight)
   bot.send_message(general, message)
 end
-
 
 bot.run()
