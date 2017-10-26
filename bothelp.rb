@@ -27,7 +27,7 @@ end
 def process(contests_raw)
   rankings = []
   for i in 0...contests_raw.length
-    rankings[i] = parse(contests_raw[i])
+    rankings[i] = parse("rankings/"+contests_raw[i])
   end
   return rankings
 end
@@ -36,11 +36,24 @@ rankings = process(contests_raw) # rankings is array of array of hash
 def channel_send(id)
   return "<##{id}>"
 end
+def filepath(file)
+  if File.file?(file+".png")
+    return file+".png"
+  elsif File.file?(file+".jpg")
+    return file+".jpg"
+  elsif File.file?(file+".gif")
+    return file+".gif"
+  else
+    puts "something fucked up: #{file}"
+  end
+end
 # --------------------VARIABLES--------------------------------------------
 welcome = 201862327937662977
 announcements = 182651662257750016
 general = 182648867534274564
 botprovinggrounds = 323486727081820161
+RESULTSWHEN_LENGTH = 74
+COPYPASTA_LENGTH = 24
 no_perm = "You do not have permission to access this command!"
 mmc_threads = [
   "https://osu.ppy.sh/forum/t/632634",
@@ -112,6 +125,20 @@ bot.command :echo do |event, *args|
   event.channel.prune(2)
   sentence = args.join(' ')
   event.respond(sentence)
+end
+
+bot.command :resultswhen do |event|
+  randVar = rand(RESULTSWHEN_LENGTH).to_s
+  randVar.prepend("0") if randVar.length == 1
+  f = File.new(filepath("resultswhen/"+randVar), "r")
+  event.channel.send_file(f)
+end
+
+bot.command :copypasta do |event|
+  randVar = rand(COPYPASTA_LENGTH).to_s
+  randVar.prepend("0") if randVar.length == 1
+  f = File.new(filepath("copypasta/copypasta "+randVar), "r")
+  event.channel.send_file(f)
 end
 
 # clean(n) prunes n messages in channel, including command line, range 2..100
