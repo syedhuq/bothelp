@@ -12,14 +12,25 @@ puts "This bot's invite URL is #{bot.invite_url}."
 contests_raw = [
   "mmc1_raw.txt",
   "mmc2_raw.txt",
-  "mmc3_raw.txt"
+  "mmc3_raw.txt",
+  "mmc3_5_raw.txt"
 ]
 def parse(file)
   temp = []
   IO.foreach(file){|line| temp.push(line.strip.split("\t"))}
   arr = []
-  for i in 0...temp.length
-    arr[i] = {:rank => temp[i][0].to_i, :name => temp[i][1]}
+  if file == "rankings/mmc3_5_raw.txt"
+    for i in 0...temp.length
+      rank = temp[i][0].to_i
+      partner1 = {:rank => rank, :name => temp[i][1]}
+      partner2 = {:rank => rank, :name => temp[i][2]}
+      arr.push(partner1)
+      arr.push(partner2)
+    end
+  else
+    for j in 0...temp.length
+      arr[j] = {:rank => temp[j][0].to_i, :name => temp[j][1]}
+    end
   end
   return arr
 end
@@ -47,6 +58,18 @@ def filepath(file)
     puts "something fucked up: #{file}"
   end
 end
+def contest_index(i)
+  case i
+  when 0
+    return "1"
+  when 1
+    return "2"
+  when 2
+    return "3"
+  when 3
+    return "3.5"
+  end
+end
 # --------------------VARIABLES--------------------------------------------
 welcome = 201862327937662977
 announcements = 182651662257750016
@@ -56,9 +79,10 @@ RESULTSWHEN_LENGTH = 74
 COPYPASTA_LENGTH = 24
 no_perm = "You do not have permission to access this command!"
 mmc_threads = [
-  "https://osu.ppy.sh/forum/t/632634",
+  "https://osu.ppy.sh/forum/t/493507",
   "https://osu.ppy.sh/forum/t/576613",
-  "https://osu.ppy.sh/forum/t/632634"
+  "https://osu.ppy.sh/forum/t/632634",
+  "https://osu.ppy.sh/forum/t/691119" #3.5
 ]
 help_public = [
   "`-help (show\_admin)` : Shows how to use bothelp commands. If called with the argument 'admin', will display admin commands as well. ex. `-help` or `-help admin`",
@@ -100,7 +124,7 @@ bot.command :ranking, min_args: 1 do |event, *username|
         cased_name ||= match[:name]
         temp = match[:rank]
       end
-      str += "MMC #{i+1} : #{temp}\n"
+      str += "MMC #{contest_index(i)} : #{temp}\n"
     end
     event.respond("Displaying rankings for #{cased_name}:\n" + str)
   end
@@ -110,12 +134,10 @@ end
 # thread(c) returns MMC c contest results thread
 bot.command :thread do |event, contest| # return results thread
   case contest
-  when "1"
+  when "1", "2", "3"
     event.respond("MMC #{contest} Results thread: #{mmc_threads[contest.to_i-1]}")
-  when "2"
-    event.respond("MMC #{contest} Results thread: #{mmc_threads[contest.to_i-1]}")
-  when "3"
-    event.respond("MMC #{contest} Results thread: #{mmc_threads[contest.to_i-1]}")
+  when "3.5"
+    event.respond("MMC #{contest} Results thread: #{mmc_threads[3]}")
   else
     event.respond("MMC #{contest} not recognized.")
   end
